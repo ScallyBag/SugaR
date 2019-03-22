@@ -103,7 +103,7 @@ void init(OptionsMap& o) {
   o["LoadHashfromFile"]      << Option(LoadHashfromFile);
   o["LoadEpdToHash"]         << Option(LoadEpdToHash);
   o["UCI_AnalyseMode"]       << Option(false);
-  o["MCTS-Learn-in Mode"]    << Option(true);
+  o["MCTS"]                  << Option(true);
   o["SyzygyPath"]            << Option("<empty>", on_tb_path);
   o["SyzygyProbeDepth"]      << Option(1, 1, 100);
   o["Syzygy50MoveRule"]      << Option(true);

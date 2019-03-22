@@ -217,7 +217,7 @@ void MainThread::search() {
   tactical = Options["ICCF Analyzes"];
   Options_Dynamic_Strategy = Options["Dynamic Strategy"];
  
-  mcts=Options["MCTS-Learn-in Mode"];
+  mcts=Options["MCTS"];
   int piecesCnt=0;
   if(mcts){
 	  expHits = false;
