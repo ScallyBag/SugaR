@@ -29,19 +29,20 @@ This distribution of SugaR consists of the following files:
 ## Uci options	
 	
 ### MCTS
-_Boolean, Default: False_
+_Boolean, Default: True
 
 Experimental, MonteCarloTreeSearch, if activated, the engine's behaviour is similar to AlphaZero concepts.
-For now, two ideas are implemented, integrated on SugaR:
+Idea are implemented, integrated on SugaR:
 
-- [https://github.com/Stefano80/Stockfish/compare/0365b08...ad6b324](playout by Stefano Cardanobile) for quiescent positions
 - [https://github.com/Kellykinyama12/Stockfish] (montecarlo by Kelly Kinyama) only when true. This creates three files for machine learning purposes:
-	-experience.bin when no more than 40 moves are played, there are non more than 6 pieces on the chessboard and at a not low depth in analysis
-	-pawngame.bin when there are no more than 2 pieces and the game's phase is not the ending
-	-openings.bin, in the form <positionKey>.bin (>=1) at the initial stage of game with memorized the move played, the depth and the score.
+###	-experience.bin
+When no more than 40 moves are played, there are non more than 6 pieces on the chessboard and at a not low depth in analysis
+###	-pawngame.bin
+When there are no more than 2 pieces and the game's phase is not the ending
+###	-openings.bin
+In the form <positionKey>.bin (>=1) at the initial stage of game with memorized the move played, the depth and the score.
 In this mode, the engine is not less strong than Stockfish in a match play without learning, but a lot better in analysis mode and to solve hard positions.
 With learning, the engine became stronger and stronger.
-The default mode, conversely, is stronger than Stockfish in a match play, but not as good as MCTS for the rest and can't improve its play because of no learning enabled.
 
 ## Dynamic Strategy 
 To be used as additional support in the analysis of particularly complex positions.

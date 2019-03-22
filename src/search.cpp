@@ -217,7 +217,7 @@ void MainThread::search() {
   tactical = Options["ICCF Analyzes"];
   Options_Dynamic_Strategy = Options["Dynamic Strategy"];
  
-  mcts=Options["MCTS"];
+  mcts=Options["MCTS-Learn-in Mode"];
   int piecesCnt=0;
   if(mcts){
 	  expHits = false;
@@ -599,11 +599,6 @@ void Thread::search() {
                   Threads.stop = true;
           }
       }
-
-	  if (mainThread && !Threads.stop && mcts)
-{
-	playout(lastBestMove, ss, bestValue);
-}
   }
 
   if (!mainThread)
@@ -617,43 +612,7 @@ void Thread::search() {
                 skill.best ? skill.best : skill.pick_best(multiPV)));
 }
 
-// Playout a game, in the hope of meaningfully filling the TT beyond the horizon
-Value Thread::playout(Move playMove, Stack* ss, Value playoutValue) {
-    StateInfo st;
-    bool ttHit;
 
-    if (     Threads.stop
-        ||  !rootPos.pseudo_legal(playMove)
-        ||  !rootPos.legal(playMove))
-        return VALUE_NONE;
-
-    if (rootPos.is_draw(ss->ply))
-        return VALUE_DRAW;
-
-    ss->currentMove         = playMove;
-    ss->continuationHistory = &continuationHistory[rootPos.moved_piece(playMove)][to_sq(playMove)];
-
-    rootPos.do_move(playMove, st);
-
-    (ss+1)->ply = ss->ply + 1;
-    int d = int(rootDepth) * int(rootDepth) / (rootDepth + 4 * ONE_PLY) - 2;
-	Depth newDepth  = d * ONE_PLY;
-    TTEntry* tte    = TT.probe(rootPos.key(), ttHit);
-	if (!ttHit && MoveList<LEGAL>(rootPos).size()){
-	    playoutValue = ::search<NonPV>(rootPos, ss+1, - playoutValue,  - playoutValue + 1, newDepth, true);
-	    tte    = TT.probe(rootPos.key(), ttHit);
-	   }
-
-    Move ttMove  = ttHit ? tte->move() : MOVE_NONE;
-    if(  ttHit
-      && ttMove != MOVE_NONE
-      && ss->ply < MAX_PLY - 2
-      && abs(playoutValue) < VALUE_KNOWN_WIN)
-        playoutValue = - playout(ttMove, ss+1, - playoutValue);
-
-    rootPos.undo_move(playMove);
-	return playoutValue;
-}
 namespace {
 
   // search<>() is the main search function for both PV and non-PV nodes
