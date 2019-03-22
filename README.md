@@ -28,7 +28,7 @@ This distribution of SugaR consists of the following files:
 
 ## Uci options	
 	
-### MCTS
+### MCTS-Learn-in Mode
 _Boolean, Default: True
 
 Experimental, MonteCarloTreeSearch, if activated, the engine's behaviour is similar to AlphaZero concepts.
