@@ -290,6 +290,8 @@ void MainThread::search() {
       }
       else
       {
+          for (Thread* th : Threads)
+      {
           th->bestMoveChanges = 0;
           if (th != this)
               th->start_searching();
