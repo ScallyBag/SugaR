@@ -26,13 +26,22 @@ This distribution of SugaR consists of the following files:
   * source, a subdirectory containing the full source code, including a Makefile
     that can be used to compile SugaR on Unix-like systems.
 
-## Uci options	
-	
-### MCTS-Learn-in Mode
-_Boolean, Default: True
+## Uci options
 
+## Dynamic Strategy 
+_Boolean, Default: False_
+
+To be used as additional support in the analysis of particularly complex positions.
+With the increase of the score, that is how much the motor is in advantage or fundamentally closer to the checkmate.
+Or In all favorable pressing situations; The advanced Pawns are penalized and the King gains more importance because
+we must pay attention to the compactness and the other way around.
+
+## Uci options	### NN section (Experimental Neural Networks inspired technics)
 Experimental, MonteCarloTreeSearch, if activated, the engine's behaviour is similar to AlphaZero concepts.
 Idea are implemented, integrated on SugaR:
+	
+### NN MCTS Self-Learning
+_Boolean, Default: True_
 
 - [https://github.com/Kellykinyama12/Stockfish] (montecarlo by Kelly Kinyama) only when true. This creates three files for machine learning purposes:
 ###	-experience.bin
@@ -42,13 +51,30 @@ When there are no more than 2 pieces and the game's phase is not the ending
 ###	-openings.bin
 In the form <positionKey>.bin (>=1) at the initial stage of game with memorized the move played, the depth and the score.
 In this mode, the engine is not less strong than Stockfish in a match play without learning, but a lot better in analysis mode and to solve hard positions.
-With learning, the engine became stronger and stronger.
 
-## Dynamic Strategy 
-To be used as additional support in the analysis of particularly complex positions.
-With the increase of the score, that is how much the motor is in advantage or fundamentally closer to the checkmate.
-Or In all favorable pressing situations; The advanced Pawns are penalized and the King gains more importance because
-we must pay attention to the compactness and the other way around.
+When activated, it loads these files in memory and therefore it can use Search Statistics
+ (Principal Variation, History Heuristics, Transposition Table, Refutation Table and Killer Moves) to play better if the same game is encountered.
+It persists the following information on the Hard Disk:
+
+- _best move_
+- _board signature (hash key)_
+- _best move depth_
+- _best move score_
+
+With learning, the engine became stronger and stronger.
+The algorithm builds a decision tree of moves and contains the statistics similar to Monte Carlo Tree Search. It makes a decision depending on what information is in the Decision Tree, so both Best Search First and later Depth First Search.
+
+#### NN Perceptron Search
+
+_Boolean, Default: False_
+- [https://github.com/Stefano80/Stockfish/compare/82ff04b992a53c757519a6ff61576ebd267c0cee...f013d90c669940e68fd707e2197fe655e35c04ed]
+( perceptron by Stefano Cardanobile) for Late Move Reductions search as training signal
+
+#### MCTS Search
+_Boolean, Default: False_
+- [https://github.com/Stefano80/Stockfish/compare/badb2ac...86fdeac]
+( Montecarlo by Stefano Cardanobile and Jörg Oster) in main search function to an upper node.
+
 ### Syzygybases
 
 **Configuration**
