@@ -56,17 +56,17 @@ namespace {
     Move m;
     string token, fen;
     string Newfen; 
-    bool mcts=Options["MCTS"]; 
+    bool mctsSelfLearning=Options["NN MCTS Self-Learning"]; 
     is >> token;
 
     if (token == "startpos")
     {
-      if(mcts)
+      if(mctsSelfLearning)
       {
 	startposition = true;
       }
       fen = StartFEN;
-      if(mcts)
+      if(mctsSelfLearning)
       {
 	 Newfen = fen;
       }
@@ -74,7 +74,7 @@ namespace {
     }
     else if (token == "fen")
     {
-      if(mcts)
+      if(mctsSelfLearning)
       {
 	startposition = false;
 	Newfen = token;
@@ -87,10 +87,10 @@ namespace {
 
     states = StateListPtr(new std::deque<StateInfo>(1)); // Drop old and create a new one
     pos.set(fen, Options["UCI_Chess960"], &states->back(), Threads.main());
-    //kellykynyama mcts begin
+
     int movesplayed = 0;
     int OPmoves = 0;
-    if(mcts)
+    if(mctsSelfLearning)
     {
       if (StartFEN != Newfen)
       {
@@ -109,7 +109,7 @@ namespace {
     {
         states->emplace_back();
 
-        if(mcts)
+        if(mctsSelfLearning)
         {
 	  if (!FileKey)
 	  {
@@ -130,7 +130,7 @@ namespace {
 
         pos.do_move(m, states->back());
 
-        if(mcts)
+        if(mctsSelfLearning)
         {
             movesplayed++;
         }
@@ -315,7 +315,7 @@ string UCI::value(Value v) {
   stringstream ss;
 
   if (abs(v) < VALUE_MATE - MAX_PLY)
-      ss << "cp " << v * 70 / PawnValueEg;
+      ss << "cp " << v * 80 / PawnValueEg;
   else
       ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
 

@@ -22,12 +22,12 @@
 
 #include "bitboard.h"
 #include "position.h"
+#include "polybook.h"
 #include "search.h"
 #include "thread.h"
 #include "tt.h"
 #include "uci.h"
 #include "syzygy/tbprobe.h"
-#include "polybook.h"
 
 namespace PSQT {
   void init();
@@ -43,7 +43,6 @@ int main(int argc, char* argv[]) {
   Position::init();
   Bitbases::init();
   Search::init();
-  Pawns::init();
   Threads.set(Options["Threads"]);
   polybook1.init(Options["BookFile1"]);
   polybook2.init(Options["BookFile2"]);

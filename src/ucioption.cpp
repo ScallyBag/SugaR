@@ -18,12 +18,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
 #include <cassert>
 #include <ostream>
-#include <sstream>
 #include <iostream>
-#include <thread>
+#include <sstream>
 
 #include "misc.h"
 #include "search.h"
@@ -56,6 +54,7 @@ void on_best_book_move2(const Option& o) { polybook2.set_best_book_move(o); }
 void on_book_depth1(const Option& o) { polybook1.set_book_depth(o); }
 void on_book_depth2(const Option& o) { polybook2.set_book_depth(o); }
 
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator() (const string& s1, const string& s2) const {
 
@@ -71,45 +70,44 @@ void init(OptionsMap& o) {
   // at most 2^32 clusters.
   constexpr int MaxHashMB = Is64Bit ? 131072 : 2048;
 
-  unsigned n = std::thread::hardware_concurrency();
-  if (!n) n = 1;
-
-  o["Use Book1"] << Option(false);
-  o["BestBook1Move"] << Option(false, on_best_book_move1);
-  o["BookFile1"] << Option("book1.bin", on_book_file1);
-  o["BookDepth1"] << Option(100, 1, 120, on_book_depth1);
-  o["Use Book2"] << Option(false);
-  o["BestBook2Move"] << Option(false, on_best_book_move2);
-  o["BookFile2"] << Option("book2.bin", on_book_file2);
-  o["BookDepth2"] << Option(100, 1, 120, on_book_depth2);
-  o["Debug Log File"]        << Option("", on_logger);
-  o["Contempt"]              << Option(24, -100, 100);
-  o["Analysis Contempt"]     << Option("Both var Off var White var Black var Both", "Both");
-  o["Threads"]               << Option(n, unsigned(1), unsigned(512), on_threads);
-  o["Hash"]                  << Option(16, 1, MaxHashMB, on_hash_size);
-  o["Clear_Hash"]            << Option(on_clear_hash);
-  o["Ponder"]                << Option(false);
-  o["MultiPV"]               << Option(1, 1, 500);
-  o["Skill Level"]           << Option(20, 0, 20);
-  o["Move Overhead"]         << Option(100, 0, 5000);
-  o["Minimum Thinking Time"] << Option(20, 0, 5000);
-  o["Slow Mover"]            << Option(84, 10, 1000);
-  o["nodestime"]             << Option(0, 0, 10000);
-  o["UCI_Chess960"]          << Option(false);
-  o["Dynamic Strategy"]      << Option(true);
-  o["NeverClearHash"]        << Option(false);
-  o["HashFile"]              << Option("hash.hsh", on_HashFile);
-  o["SaveHashtoFile"]        << Option(SaveHashtoFile);
-  o["LoadHashfromFile"]      << Option(LoadHashfromFile);
-  o["LoadEpdToHash"]         << Option(LoadEpdToHash);
-  o["UCI_AnalyseMode"]       << Option(false);
-  o["MCTS"]                  << Option(true);
-  o["SyzygyPath"]            << Option("<empty>", on_tb_path);
-  o["SyzygyProbeDepth"]      << Option(1, 1, 100);
-  o["Syzygy50MoveRule"]      << Option(true);
-  o["SyzygyProbeLimit"]      << Option(7, 0, 7);
-  o["ICCF Analyzes"]         << Option(0, 0,  8);
-  o["NullMove"]              << Option(true);
+  o["Use Book1"]                   << Option(false);
+  o["BestBook1Move"]               << Option(false, on_best_book_move1);
+  o["BookFile1"]                   << Option("book1.bin", on_book_file1);
+  o["BookDepth1"]                  << Option(100, 1, 120, on_book_depth1);
+  o["Use Book2"]                   << Option(false);
+  o["BestBook2Move"]               << Option(false, on_best_book_move2);
+  o["BookFile2"]                   << Option("book2.bin", on_book_file2);
+  o["BookDepth2"]                  << Option(100, 1, 120, on_book_depth2);
+  o["Debug Log File"]              << Option("", on_logger);
+  o["Contempt"]                    << Option(24, -100, 100);
+  o["Analysis Contempt"]           << Option("Both var Off var White var Black var Both", "Both");
+  o["Threads"]                     << Option(1, 1, 512, on_threads);
+  o["Hash"]                        << Option(16, 1, MaxHashMB, on_hash_size);
+  o["Clear Hash"]                  << Option(on_clear_hash);
+  o["Ponder"]                      << Option(false);
+  o["MultiPV"]                     << Option(1, 1, 500);
+  o["Skill Level"]                 << Option(20, 0, 20);
+  o["Move Overhead"]               << Option(100, 0, 5000);
+  o["Minimum Thinking Time"]       << Option(20, 0, 5000);
+  o["Slow Mover"]                  << Option(84, 10, 1000);
+  o["nodestime"]                   << Option(0, 0, 10000);
+  o["UCI_Chess960"]                << Option(false);
+  o["NeverClearHash"]              << Option(false);
+  o["HashFile"]                    << Option("hash.hsh", on_HashFile);
+  o["SaveHashtoFile"]              << Option(SaveHashtoFile);
+  o["LoadHashfromFile"]            << Option(LoadHashfromFile);
+  o["LoadEpdToHash"]               << Option(LoadEpdToHash);
+  o["UCI_AnalyseMode"]             << Option(false);
+  o["NN Perceptron Search"]        << Option(false);
+  o["NN MCTS Self-Learning"]       << Option(true);
+  o["MCTS Search"]                 << Option(false);
+  o["Dynamic Strategy"]            << Option(false);
+  o["ICCF Analyzes"]               << Option(0, 0,  8);
+  o["NullMove"]                    << Option(true);
+  o["SyzygyPath"]                  << Option("<empty>", on_tb_path);
+  o["SyzygyProbeDepth"]            << Option(1, 1, 100);
+  o["Syzygy50MoveRule"]            << Option(true);
+  o["SyzygyProbeLimit"]            << Option(7, 0, 7);
 }
 
 
